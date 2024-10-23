@@ -10,69 +10,61 @@ include_once('../core/Initialize.php');
 //getting request method
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
-$post = new Post($db);
+$category = new Category($db);
 
 //GET data id
-$post->id = isset($_GET['id']) ? $_GET['id'] : false;
+$category->id = isset($_GET['id']) ? $_GET['id'] : false;
 
 //GET all post
-if ($requestMethod == 'GET' && $post->id == false) {
+if ($requestMethod == 'GET' && $category->id == false) {
     //result query post
-    $result = $post->allPosts();
+    $result = $category->allCategory();
 
     $rowCount = $result->rowCount();
 
     if ($rowCount > 0) {
-        $postArr = [];
-        $postArr['data'] = [];
+        $categoryArr = [];
+        $categoryArr['data'] = [];
 
         while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
             extract($row);
 
-            $postItem = [
+            $categoryItem = [
                 'id' => $id,
-                'title' => $title,
-                'body' => html_entity_decode($body),
-                'author' => $author,
-                'category_id' => $category_id,
-                'category_name' => $category_name
+                'name' => $name,
             ];
 
-            array_push($postArr['data'], $postItem);
+            array_push($categoryArr['data'], $categoryItem);
         }
 
         //convert to JSON Format
-        echo json_encode($postArr);
+        echo json_encode($categoryArr);
     } else {
-        echo json_encode(['message' => 'No post found!!']);
+        echo json_encode(['message' => 'No category found!!']);
     }
 }
 
-//GET single post
-if ($requestMethod == 'GET' && $post->id != false) {
-    //result query single post
-    $result = $post->read();
+//GET single category
+if ($requestMethod == 'GET' && $category->id != false) {
+    //result query single category
+    $result = $category->show();
 
     $rowCount = $result->rowCount();
 
     if ($rowCount > 0) {
-        $postArr = [];
-        $postArr['data'] = [];
+        $categoryArr = [];
+        $categoryArr['data'] = [];
 
-        $postItem = [
-            'id' => $post->id,
-            'title' => $post->title,
-            'body' => html_entity_decode($post->body),
-            'author' => $post->author,
-            'category_id' => $post->categoryId,
-            'category_name' => $post->categoryName
+        $categoryItem = [
+            'id' => $category->id,
+            'name' => $category->name,
         ];
 
-        array_push($postArr['data'], $postItem);
+        array_push($categoryArr['data'], $categoryItem);
 
 
         //convert to JSON Format
-        echo json_encode($postArr);
+        echo json_encode($categoryArr);
     } else {
         echo json_encode(['message' => 'No post found!!']);
     }
@@ -85,18 +77,15 @@ if ($requestMethod == 'POST') {
     // get raw data
     $data = json_decode(file_get_contents("php://input"));
 
-    $post->title = $data->title;
-    $post->body = $data->body;
-    $post->author = $data->author;
-    $post->categoryId = $data->category_id;
+    $category->name = $data->name;
 
-    if ($post->create()) {
+    if ($category->create()) {
         echo json_encode(
-            array('message' => 'Post created!!')
+            array('message' => 'Category created!!')
         );
     } else {
         echo json_encode(
-            array('message' => 'Post not created!!')
+            array('message' => 'Category not created!!')
         );
     }
 }
@@ -108,19 +97,16 @@ if ($requestMethod == 'PUT') {
     // get raw data
     $data = json_decode(file_get_contents("php://input"));
 
-    $post->id = $data->id;
-    $post->title = $data->title;
-    $post->body = $data->body;
-    $post->author = $data->author;
-    $post->categoryId = $data->category_id;
+    $category->id = $data->id;
+    $category->name = $data->name;
 
-    if ($post->update()) {
+    if ($category->update()) {
         echo json_encode(
-            array('message' => 'Post updated!!')
+            array('message' => 'Category updated!!')
         );
     } else {
         echo json_encode(
-            array('message' => 'Post not updated!!')
+            array('message' => 'Category not updated!!')
         );
     }
 }
@@ -132,15 +118,15 @@ if ($requestMethod == 'DELETE') {
     // get raw data
     $data = json_decode(file_get_contents("php://input"));
 
-    $post->id = $data->id;
+    $category->id = $data->id;
 
-    if ($post->delete()) {
+    if ($category->delete()) {
         echo json_encode(
-            array('message' => 'Post deleted!!')
+            array('message' => 'Category deleted!!')
         );
     } else {
         echo json_encode(
-            array('message' => 'Post not deleted!!')
+            array('message' => 'Category not deleted!!')
         );
     }
 }

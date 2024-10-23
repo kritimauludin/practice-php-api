@@ -72,4 +72,86 @@ class Post
 
         return $statement;
     }
+
+    public function create()
+    {
+        // query insert 
+        $query = '
+            INSERT INTO ' . $this->table . ' 
+            SET  title = :title, body = :body, author = :author, category_id = :category_id 
+        ';
+
+        $statement = $this->conn->prepare($query);
+
+        //make sure clean data
+        $this->title        = htmlspecialchars(strip_tags($this->title));
+        $this->body         = htmlspecialchars(strip_tags($this->body));
+        $this->author       = htmlspecialchars(strip_tags($this->author));
+        $this->categoryId   = htmlspecialchars(strip_tags($this->categoryId));
+
+        $statement->bindParam(':title', $this->title);
+        $statement->bindParam(':body', $this->body);
+        $statement->bindParam(':author', $this->author);
+        $statement->bindParam(':category_id', $this->categoryId);
+
+        if ($statement->execute()) {
+            return true;
+        }
+
+        printf("Error %s. \n", $statement->error);
+        return false;
+    }
+
+    public function update()
+    {
+        // query insert 
+        $query = '
+            UPDATE ' . $this->table . ' 
+            SET  title = :title, body = :body, author = :author, category_id = :category_id 
+            WHERE id = :id
+        ';
+
+        $statement = $this->conn->prepare($query);
+
+        //make sure clean data
+        $this->title        = htmlspecialchars(strip_tags($this->title));
+        $this->body         = htmlspecialchars(strip_tags($this->body));
+        $this->author       = htmlspecialchars(strip_tags($this->author));
+        $this->categoryId   = htmlspecialchars(strip_tags($this->categoryId));
+        $this->id           = htmlspecialchars(strip_tags($this->id));
+
+        $statement->bindParam(':title', $this->title);
+        $statement->bindParam(':body', $this->body);
+        $statement->bindParam(':author', $this->author);
+        $statement->bindParam(':category_id', $this->categoryId);
+        $statement->bindParam(':id', $this->id);
+
+        if ($statement->execute()) {
+            return true;
+        }
+
+        printf("Error %s. \n", $statement->error);
+        return false;
+    }
+
+    public function delete()
+    {
+        $query = '
+            DELETE FROM ' . $this->table . ' WHERE id = :id
+        ';
+
+        $statement = $this->conn->prepare($query);
+
+        //clean data
+        $this->id           = htmlspecialchars(strip_tags($this->id));
+
+        $statement->bindParam(':id', $this->id);
+
+        if ($statement->execute()) {
+            return true;
+        }
+
+        printf("Error %s. \n", $statement->error);
+        return false;
+    }
 }
