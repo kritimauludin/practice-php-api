@@ -71,8 +71,8 @@ if ($requestMethod == 'GET' && $category->id != false) {
 }
 
 if ($requestMethod == 'POST') {
-    header('Access-Control-Allow-Methods : POST');
-    header('Access-Control-Allow-Headers : Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
+    header('Access-Control-Allow-Methods: POST');
+    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
 
     // get raw data
     $data = json_decode(file_get_contents("php://input"));
@@ -91,8 +91,8 @@ if ($requestMethod == 'POST') {
 }
 
 if ($requestMethod == 'PUT') {
-    header('Access-Control-Allow-Methods : PUT');
-    header('Access-Control-Allow-Headers : Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
+    header('Access-Control-Allow-Methods: PUT');
+    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
 
     // get raw data
     $data = json_decode(file_get_contents("php://input"));
@@ -112,8 +112,8 @@ if ($requestMethod == 'PUT') {
 }
 
 if ($requestMethod == 'DELETE') {
-    header('Access-Control-Allow-Methods : DELETE');
-    header('Access-Control-Allow-Headers : Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
+    header('Access-Control-Allow-Methods: DELETE');
+    header('Access-Control-Allow-Headers: Access-Control-Allow-Headers,Content-Type,Access-Control-Allow-Methods,Authorization,X-Requested-With');
 
     // get raw data
     $data = json_decode(file_get_contents("php://input"));
